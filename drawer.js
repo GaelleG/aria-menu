@@ -81,6 +81,13 @@ function bindHandlers() {
   var i = 0;
   var l = 0;
 
+  // Menu
+  vd.menuEl.onkeydown = (function () {
+    return function (e) {
+      vd.handleMenuKeydown(e);
+    }
+  })();
+
   // Items
   var item = null;
   for (i = 0, l = vd.items.length; i < l; i++) {
@@ -136,11 +143,25 @@ function handleDocumentClick() {
     vd.childMenus[i].setAttribute('aria-hidden', 'true');
   }
 
-  for (i = 0, l = vd.allItems.length; i < l; i++) {
-    vd.allItems[i].style.color = '';
-  }
-
+  if (vd.activeItem) vd.activeItem.style.color = '';
   vd.activeItem = null;
+}
+
+function handleMenuKeydown(e) {
+  var vd = this;
+  var i = 0;
+  var l = 0;
+
+  if (e.keyCode === this.keys.tab) {
+    for (i = 0, l = vd.childMenus.length; i < l; i++) {
+      vd.childMenus[i].style.display = 'none';
+      vd.childMenus[i].setAttribute('aria-hidden', 'true');
+    }
+    if (vd.activeItem) vd.activeItem.style.color = '';
+    vd.activeItem = null;
+    e.stopPropagation();
+    return false;
+  }
 }
 
 function handleParentClick(parent, e) {
