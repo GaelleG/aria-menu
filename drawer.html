@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <style type="text/css">
+    #aria-drawer ul {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <ul id="aria-drawer" role="menubar">
+    <li class="aria-drawer-parent aria-drawer-root" role="menuitem" tabindex="0" aria-haspopup="true">
+      Item 1
+      <ul role="menu" aria-hidden="true">
+        <li class="aria-drawer-parent" role="menuitem" tabindex="-1" aria-haspopup="true">
+          Item 1 A
+          <ul role="menu" aria-hidden="true">
+            <li class="aria-drawer-item" role="menuitem" tabindex="-1">
+              Item 1 A a
+            </li>
+            <li class="aria-drawer-item" role="menuitem" tabindex="-1">
+              Item 1 A b
+            </li>
+            <li class="aria-drawer-item" role="menuitem" tabindex="-1">
+              Item 1 A c
+            </li>
+          </ul>
+        </li>
+        <li class="aria-drawer-item" role="menuitem" tabindex="-1">
+          Item 1 B
+        </li>
+        <li class="aria-drawer-item" role="menuitem" tabindex="-1">
+          Item 1 C
+        </li>
+      </ul>
+    </li>
+    <li class="aria-drawer-parent aria-drawer-root" role="menuitem" tabindex="-1" aria-haspopup="true">
+      Item 2
+      <ul role="menu" aria-hidden="true">
+        <li class="aria-drawer-item" role="menuitem" tabindex="-1">
+          Item 2 A
+        </li>
+        <li class="aria-drawer-item" role="menuitem" tabindex="-1">
+          Item 2 B
+        </li>
+        <li class="aria-drawer-item" role="menuitem" tabindex="-1">
+          Item 2 C
+        </li>
+      </ul>
+    </li>
+    <li class="aria-drawer-parent aria-drawer-root" role="menuitem" tabindex="-1" aria-haspopup="true">
+      Item 3
+      <ul role="menu" aria-hidden="true">
+        <li class="aria-drawer-item" role="menuitem" tabindex="-1">
+          Item 3 A
+        </li>
+        <li class="aria-drawer-item" role="menuitem" tabindex="-1">
+          Item 3 B
+        </li>
+        <li class="aria-drawer-item" role="menuitem" tabindex="-1">
+          Item 3 C
+        </li>
+      </ul>
+    </li>
+  </ul>
+<script type="text/javascript" src="drawer.js"></script>
+<script type="text/javascript">
+  var ariaMenu = new AriaDrawer();
+</script>
+</body>
+</html>
