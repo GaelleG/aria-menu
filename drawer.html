@@ -6,6 +6,9 @@
     #aria-drawer ul {
       display: none;
     }
+    .aria-drawer-title {
+      color: grey;
+    }
   </style>
 </head>
 <body>
@@ -13,9 +16,15 @@
     <li class="aria-drawer-parent aria-drawer-root" role="menuitem" tabindex="0" aria-haspopup="true">
       Item 1
       <ul role="menu" aria-hidden="true">
+        <li class="aria-drawer-title">
+          Item 1
+        </li>
         <li class="aria-drawer-parent" role="menuitem" tabindex="-1" aria-haspopup="true">
           Item 1 A
           <ul role="menu" aria-hidden="true">
+            <li class="aria-drawer-title">
+              Item 1 A
+            </li>
             <li class="aria-drawer-item" role="menuitem" tabindex="-1">
               Item 1 A a
             </li>
@@ -38,6 +47,9 @@
     <li class="aria-drawer-parent aria-drawer-root" role="menuitem" tabindex="-1" aria-haspopup="true">
       Item 2
       <ul role="menu" aria-hidden="true">
+        <li class="aria-drawer-title">
+          Item 2
+        </li>
         <li class="aria-drawer-item" role="menuitem" tabindex="-1">
           Item 2 A
         </li>
@@ -52,6 +64,9 @@
     <li class="aria-drawer-parent aria-drawer-root" role="menuitem" tabindex="-1" aria-haspopup="true">
       Item 3
       <ul role="menu" aria-hidden="true">
+        <li class="aria-drawer-title">
+          Item 3
+        </li>
         <li class="aria-drawer-item" role="menuitem" tabindex="-1">
           Item 3 A
         </li>

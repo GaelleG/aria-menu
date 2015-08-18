@@ -32,9 +32,12 @@ function AriaDrawer(_id) {
 AriaDrawer.prototype.initReferences = initReferences;
 AriaDrawer.prototype.bindHandlers = bindHandlers;
 AriaDrawer.prototype.handleDocumentClick = handleDocumentClick;
+AriaDrawer.prototype.handleMenuKeydown = handleMenuKeydown;
 AriaDrawer.prototype.handleParentClick = handleParentClick;
 AriaDrawer.prototype.handleParentKeydown = handleParentKeydown;
+AriaDrawer.prototype.handleItemClick = handleItemClick;
 AriaDrawer.prototype.handleItemKeydown = handleItemKeydown;
+AriaDrawer.prototype.toggleSubMenu = toggleSubMenu;
 AriaDrawer.prototype.showSubMenu = showSubMenu;
 AriaDrawer.prototype.hideSubMenu = hideSubMenu;
 AriaDrawer.prototype.moveToPrevMenu = moveToPrevMenu;
@@ -65,11 +68,6 @@ function initReferences() {
     return false;
   }
 
-  this.allItems = this.menuEl.querySelectorAll('li');
-  if (this.allItems.length === 0) {
-    return false;
-  }
-
   this.childMenus = this.menuEl.querySelectorAll('ul');
   if (this.childMenus.length === 0) {
     return false;
@@ -87,6 +85,13 @@ function bindHandlers() {
   var item = null;
   for (i = 0, l = vd.items.length; i < l; i++) {
     item = vd.items[i];
+
+    item.onclick = (function () {
+      var item = vd.items[i];
+      return function (e) {
+        return vd.handleItemClick(item, e);
+      }
+    })();
 
     item.onkeydown = (function () {
       var item = vd.items[i];
@@ -119,25 +124,6 @@ function bindHandlers() {
   document.onclick = function(e) {
     return vd.handleDocumentClick(e);
   };
-
-  // All items
-  item = null;
-  for (i = 0, l = vd.allItems.length; i < l; i++) {
-    item = vd.allItems[i];
-    item.onmouseenter = (function () {
-      var item = vd.allItems[i];
-      return function () {
-        item.style.color = 'red';
-      }
-    })();
-
-    item.onmouseout = (function () {
-      var item = vd.allItems[i];
-      return function () {
-        item.style.color = '';
-      }
-    })();
-  }
 }
 
 function handleDocumentClick() {
@@ -158,8 +144,7 @@ function handleDocumentClick() {
 }
 
 function handleParentClick(parent, e) {
-  this.showSubMenu(parent);
-  this.setActiveItem(parent);
+  this.toggleSubMenu(parent);
   e.stopPropagation();
   return false;
 }
@@ -208,6 +193,14 @@ function handleParentKeydown(parent, e) {
   return true;
 }
 
+function handleItemClick(item, e) {
+  if (this.activeItem) this.activeItem.style.color = '';
+  item.style.color = 'red';
+  this.activeItem = item;
+  e.stopPropagation();
+  return false;
+}
+
 function handleItemKeydown(item, e) {
   if (e.altKey || e.ctrlKey) {
     return true;
@@ -251,37 +244,65 @@ function handleItemKeydown(item, e) {
   return true;
 }
 
+function toggleSubMenu(parent) {
+  var subUL = parent.querySelector('ul');
+  var firstLI = subUL.querySelector(':scope > li:not(.aria-drawer-title)');
+
+  if (this.activeItem) this.activeItem.style.color = '';
+
+  if (subUL.getAttribute('aria-hidden') === 'true') {
+    parent.style.color = '';
+    subUL.style.display = 'block';
+    subUL.setAttribute('aria-hidden', 'false');
+    firstLI.focus();
+    firstLI.style.color = 'red';
+    this.activeItem = firstLI;
+  } else {
+    subUL.style.display = 'none';
+    subUL.setAttribute('aria-hidden', 'true');
+    parent.focus();
+    parent.style.color = 'red';
+    this.activeItem = parent;
+  }
+}
+
 function showSubMenu(parent) {
   var subUL = parent.querySelector('ul');
-  var firstLI = subUL.querySelector(':scope > li');
+  var firstLI = subUL.querySelector(':scope > li:not(.aria-drawer-title)');
+  if (this.activeItem) this.activeItem.style.color = '';
   parent.style.color = '';
   subUL.style.display = 'block';
   subUL.setAttribute('aria-hidden', 'false');
   firstLI.focus();
   firstLI.style.color = 'red';
-  if (this.activeElement) this.activeElement.style.color = '';
+  this.activeItem = firstLI;
 }
 
 function hideSubMenu(item) {
   var parentUL = item.parentElement;
   var parentLI = parentUL.parentElement;
+  if (this.activeItem) this.activeItem.style.color = '';
   parentUL.style.display = 'none';
   parentUL.setAttribute('aria-hidden', 'false');
   parentLI.focus();
   parentLI.style.color = 'red';
-  if (this.activeElement) this.activeElement.style.color = '';
+  this.activeItem = parentLI;
 }
 
 function moveToPrevMenu(item) {
   var itemUL = item.querySelector('ul');
   var parentUL = item.parentElement;
-  var siblingsLI = parentUL.querySelectorAll(':scope > li');
+  var siblingsLI = parentUL.querySelectorAll(':scope > li:not(.aria-drawer-title)');
   var newItem = null;
   var newItemUL = null;
 
   newItem = item.previousElementSibling;
   
   if (newItem === null) {
+    newItem = siblingsLI[siblingsLI.length - 1];
+  }
+
+  if (newItem.className.indexOf('aria-drawer-title') > -1) {
     newItem = siblingsLI[siblingsLI.length - 1];
   }
 
@@ -295,7 +316,7 @@ function moveToPrevMenu(item) {
 function moveToNextMenu(item) {
   var itemUL = item.querySelector('ul');
   var parentUL = item.parentElement;
-  var siblingsLI = parentUL.querySelectorAll(':scope > li');
+  var siblingsLI = parentUL.querySelectorAll(':scope > li:not(.aria-drawer-title)');
   var newItem = null;
 
   newItem = item.nextElementSibling;
@@ -313,13 +334,17 @@ function moveToNextMenu(item) {
 
 function moveToPrevItem(item) {
   var parentUL = item.parentElement;
-  var siblingsLI = parentUL.querySelectorAll(':scope > li');
+  var siblingsLI = parentUL.querySelectorAll(':scope > li:not(.aria-drawer-title)');
   var newItem = null;
   var newItemUL = null;
 
   newItem = item.previousElementSibling;
 
   if (newItem === null) {
+    newItem = siblingsLI[siblingsLI.length - 1];
+  }
+
+  if (newItem.className.indexOf('aria-drawer-title') > -1) {
     newItem = siblingsLI[siblingsLI.length - 1];
   }
 
@@ -331,7 +356,7 @@ function moveToPrevItem(item) {
 
 function moveToNextItem(item) {
   var parentUL = item.parentElement;
-  var siblingsLI = parentUL.querySelectorAll(':scope > li');
+  var siblingsLI = parentUL.querySelectorAll(':scope > li:not(.aria-drawer-title)');
   var newItem = null;
   var newItemUL = null;
 
@@ -348,10 +373,10 @@ function moveToNextItem(item) {
 }
 
 function setKeyActiveItem(newItem) {
-  if (this.activeElement) this.activeElement.style.color = '';
-  this.activeElement = newItem;
-  this.activeElement.focus();
-  this.activeElement.style.color = 'red';
+  if (this.activeItem) this.activeItem.style.color = '';
+  this.activeItem = newItem;
+  this.activeItem.focus();
+  this.activeItem.style.color = 'red';
 }
 
 function setActiveItem(item) {
