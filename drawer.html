@@ -1,84 +1,79 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title></title>
-  <style type="text/css">
-    #menu-drawer ul {
-      display: none;
-    }
-    .menu-drawer-title {
-      color: grey;
-    }
-  </style>
+  <title>ARIA MENU MF</title>
+  <link rel="stylesheet" type="text/css" href="drawer.css">
 </head>
 <body>
-  <ul id="menu-drawer" role="menubar">
-    <li class="menu-drawer-parent menu-drawer-root" role="menuitem" tabindex="0" aria-haspopup="true">
-      Item 1
-      <ul role="menu" aria-hidden="true">
-        <li class="menu-drawer-title">
-          Item 1
-        </li>
-        <li class="menu-drawer-parent" role="menuitem" tabindex="-1" aria-haspopup="true">
-          Item 1 A
-          <ul role="menu" aria-hidden="true">
-            <li class="menu-drawer-title">
-              Item 1 A
-            </li>
-            <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#1Aa">
-              Item 1 A a
-            </li>
-            <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#1Ab">
-              Item 1 A b
-            </li>
-            <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#1Ac">
-              Item 1 A c
-            </li>
-          </ul>
-        </li>
-        <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#1B">
-          Item 1 B
-        </li>
-        <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#1C">
-          Item 1 C
-        </li>
-      </ul>
-    </li>
-    <li class="menu-drawer-parent menu-drawer-root" role="menuitem" tabindex="-1" aria-haspopup="true">
-      Item 2
-      <ul role="menu" aria-hidden="true">
-        <li class="menu-drawer-title">
-          Item 2
-        </li>
-        <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#2A">
-          Item 2 A
-        </li>
-        <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#2B">
-          Item 2 B
-        </li>
-        <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#2C">
-          Item 2 C
-        </li>
-      </ul>
-    </li>
-    <li class="menu-drawer-parent menu-drawer-root" role="menuitem" tabindex="-1" aria-haspopup="true">
-      Item 3
-      <ul role="menu" aria-hidden="true">
-        <li class="menu-drawer-title">
-          Item 3
-        </li>
-        <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#3A">
-          Item 3 A
-        </li>
-        <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#3B">
-          Item 3 B
-        </li>
-        <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#3C">
-          Item 3 C
-        </li>
-      </ul>
-    </li>
-  </ul>
+  <div class="menu-drawer-container">
+    <ul id="menu-drawer" class="menu-drawer" role="menubar">
+      <li class="menu-drawer-parent menu-drawer-root" role="menuitem" tabindex="0" aria-haspopup="true">
+        Item 1
+        <ul role="menu" aria-hidden="true">
+          <li class="menu-drawer-title">
+            Item 1
+          </li>
+          <li class="menu-drawer-parent" role="menuitem" tabindex="-1" aria-haspopup="true">
+            Item 1 A
+            <ul role="menu" aria-hidden="true">
+              <li class="menu-drawer-title">
+                Item 1 A
+              </li>
+              <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#1Aa">
+                Item 1 A a
+              </li>
+              <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#1Ab">
+                Item 1 A b
+              </li>
+              <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#1Ac">
+                Item 1 A c
+              </li>
+            </ul>
+          </li>
+          <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#1B">
+            Item 1 B
+          </li>
+          <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#1C">
+            Item 1 C
+          </li>
+        </ul>
+      </li>
+      <li class="menu-drawer-parent menu-drawer-root" role="menuitem" tabindex="-1" aria-haspopup="true">
+        Item 2
+        <ul role="menu" aria-hidden="true">
+          <li class="menu-drawer-title">
+            Item 2
+          </li>
+          <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#2A">
+            Item 2 A
+          </li>
+          <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#2B">
+            Item 2 B
+          </li>
+          <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#2C">
+            Item 2 C
+          </li>
+        </ul>
+      </li>
+      <li class="menu-drawer-parent menu-drawer-root" role="menuitem" tabindex="-1" aria-haspopup="true">
+        Item 3
+        <ul role="menu" aria-hidden="true">
+          <li class="menu-drawer-title">
+            Item 3
+          </li>
+          <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#3A">
+            Item 3 A
+          </li>
+          <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#3B">
+            Item 3 B
+          </li>
+          <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#3C">
+            Item 3 C
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
 <script type="text/javascript" src="drawer.js"></script>
 <script type="text/javascript">
   var ariaMenu = new AriaDrawer();
