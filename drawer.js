@@ -1,5 +1,5 @@
 function AriaDrawer(_id) {
-  this.id = '#aria-drawer';
+  this.id = '#menu-drawer';
   this.menuEl = null;
   this.menuChildren = null;
   this.rootItems = [];
@@ -58,12 +58,12 @@ function initReferences() {
     return false;
   }
 
-  this.items = this.menuEl.querySelectorAll('.aria-drawer-item');
+  this.items = this.menuEl.querySelectorAll('.menu-drawer-item');
   if (this.items.length === 0) {
     return false;
   }
 
-  this.parents = this.menuEl.querySelectorAll('.aria-drawer-parent');
+  this.parents = this.menuEl.querySelectorAll('.menu-drawer-parent');
   if (this.parents.length === 0) {
     return false;
   }
@@ -185,7 +185,7 @@ function handleParentKeydown(parent, e) {
       }
     case this.keys.left:
       {
-        if (parent.className.indexOf('aria-drawer-root') === -1) {
+        if (parent.className.indexOf('menu-drawer-root') === -1) {
           this.hideSubMenu(parent);
         }
         e.stopPropagation();
@@ -271,7 +271,7 @@ function handleItemKeydown(item, e) {
 
 function toggleSubMenu(parent) {
   var subUL = parent.querySelector('ul');
-  var firstLI = subUL.querySelector(':scope > li:not(.aria-drawer-title)');
+  var firstLI = subUL.querySelector(':scope > li:not(.menu-drawer-title)');
 
   if (this.activeItem) this.activeItem.style.color = '';
 
@@ -293,7 +293,7 @@ function toggleSubMenu(parent) {
 
 function showSubMenu(parent) {
   var subUL = parent.querySelector('ul');
-  var firstLI = subUL.querySelector(':scope > li:not(.aria-drawer-title)');
+  var firstLI = subUL.querySelector(':scope > li:not(.menu-drawer-title)');
   if (this.activeItem) this.activeItem.style.color = '';
   parent.style.color = '';
   subUL.style.display = 'block';
@@ -317,7 +317,7 @@ function hideSubMenu(item) {
 function moveToPrevMenu(item) {
   var itemUL = item.querySelector('ul');
   var parentUL = item.parentElement;
-  var siblingsLI = parentUL.querySelectorAll(':scope > li:not(.aria-drawer-title)');
+  var siblingsLI = parentUL.querySelectorAll(':scope > li:not(.menu-drawer-title)');
   var newItem = null;
   var newItemUL = null;
 
@@ -327,7 +327,7 @@ function moveToPrevMenu(item) {
     newItem = siblingsLI[siblingsLI.length - 1];
   }
 
-  if (newItem.className.indexOf('aria-drawer-title') > -1) {
+  if (newItem.className.indexOf('menu-drawer-title') > -1) {
     newItem = siblingsLI[siblingsLI.length - 1];
   }
 
@@ -341,7 +341,7 @@ function moveToPrevMenu(item) {
 function moveToNextMenu(item) {
   var itemUL = item.querySelector('ul');
   var parentUL = item.parentElement;
-  var siblingsLI = parentUL.querySelectorAll(':scope > li:not(.aria-drawer-title)');
+  var siblingsLI = parentUL.querySelectorAll(':scope > li:not(.menu-drawer-title)');
   var newItem = null;
 
   newItem = item.nextElementSibling;
@@ -359,7 +359,7 @@ function moveToNextMenu(item) {
 
 function moveToPrevItem(item) {
   var parentUL = item.parentElement;
-  var siblingsLI = parentUL.querySelectorAll(':scope > li:not(.aria-drawer-title)');
+  var siblingsLI = parentUL.querySelectorAll(':scope > li:not(.menu-drawer-title)');
   var newItem = null;
   var newItemUL = null;
 
@@ -369,7 +369,7 @@ function moveToPrevItem(item) {
     newItem = siblingsLI[siblingsLI.length - 1];
   }
 
-  if (newItem.className.indexOf('aria-drawer-title') > -1) {
+  if (newItem.className.indexOf('menu-drawer-title') > -1) {
     newItem = siblingsLI[siblingsLI.length - 1];
   }
 
@@ -381,7 +381,7 @@ function moveToPrevItem(item) {
 
 function moveToNextItem(item) {
   var parentUL = item.parentElement;
-  var siblingsLI = parentUL.querySelectorAll(':scope > li:not(.aria-drawer-title)');
+  var siblingsLI = parentUL.querySelectorAll(':scope > li:not(.menu-drawer-title)');
   var newItem = null;
   var newItemUL = null;
 
