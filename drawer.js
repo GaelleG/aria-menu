@@ -218,6 +218,8 @@ function handleItemClick(item, e) {
   if (this.activeItem) this.activeItem.style.color = '';
   item.style.color = 'red';
   this.activeItem = item;
+  var href = item.getAttribute('data-href')
+  if (href !== null) window.location = href;
   e.stopPropagation();
   return false;
 }
@@ -234,6 +236,8 @@ function handleItemKeydown(item, e) {
     case this.keys.space:
       {
         console.log('enter | space');
+        var href = item.getAttribute('data-href')
+        if (href !== null) window.location = href;
         e.stopPropagation();
         return false;
       }
