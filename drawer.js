@@ -5,6 +5,7 @@ function AriaDrawer(_id) {
   this.rootItems = [];
   this.items = [];
   this.parents = [];
+  this.titles = [];
   this.allItems = [];
   this.childMenus = [];
   this.activeItem = null;
@@ -38,7 +39,7 @@ AriaDrawer.prototype.handleParentClick = handleParentClick;
 AriaDrawer.prototype.handleParentKeydown = handleParentKeydown;
 AriaDrawer.prototype.handleItemClick = handleItemClick;
 AriaDrawer.prototype.handleItemKeydown = handleItemKeydown;
-AriaDrawer.prototype.toggleSubMenu = toggleSubMenu;
+AriaDrawer.prototype.handleTitleClick = handleTitleClick;
 AriaDrawer.prototype.showSubMenu = showSubMenu;
 AriaDrawer.prototype.hideSubMenu = hideSubMenu;
 AriaDrawer.prototype.slideInMenu = slideInMenu;
@@ -48,7 +49,6 @@ AriaDrawer.prototype.moveToNextMenu = moveToNextMenu
 AriaDrawer.prototype.moveToPrevItem = moveToPrevItem;
 AriaDrawer.prototype.moveToNextItem = moveToNextItem;
 AriaDrawer.prototype.setKeyActiveItem = setKeyActiveItem;
-AriaDrawer.prototype.setActiveItem = setActiveItem;
 
 function initReferences() {
   this.menuEl = document.querySelector(this.id);
@@ -68,6 +68,11 @@ function initReferences() {
 
   this.parents = this.menuEl.querySelectorAll('.menu-drawer-parent');
   if (this.parents.length === 0) {
+    return false;
+  }
+
+  this.titles = this.menuEl.querySelectorAll('.menu-drawer-title');
+  if (this.titles.length === 0) {
     return false;
   }
 
@@ -131,6 +136,19 @@ function bindHandlers() {
     })();
   }
 
+  // Titles
+  var title = null;
+  for (i = 0, l = vd.titles.length; i < l; i++) {
+    title = vd.titles[i];
+
+    title.onclick = (function () {
+      var title = vd.titles[i];
+      return function (e) {
+        return vd.handleTitleClick(title, e);
+      }
+    })();
+  }
+
   document.onclick = function(e) {
     return vd.handleDocumentClick(e);
   };
@@ -156,19 +174,29 @@ function handleMenuKeydown(e) {
   var l = 0;
 
   if (e.keyCode === this.keys.tab) {
+    vd.isMoving = true;
     for (i = 0, l = vd.childMenus.length; i < l; i++) {
-      vd.childMenus[i].style.display = 'none';
+      vd.childMenus[i].style.left = '100%';
+      vd.childMenus[i].style.right = '-100%';
       vd.childMenus[i].setAttribute('aria-hidden', 'true');
     }
     if (vd.activeItem) vd.activeItem.style.color = '';
     vd.activeItem = null;
+    setTimeout(function () {
+      vd.isMoving = false;
+    }, 500);
     e.stopPropagation();
     return false;
   }
 }
 
 function handleParentClick(parent, e) {
-  this.toggleSubMenu(parent);
+  if (this.isMoving) {
+    e.stopPropagation();
+    return false;
+  }
+
+  this.showSubMenu(parent);
   e.stopPropagation();
   return false;
 }
@@ -223,7 +251,8 @@ function handleParentKeydown(parent, e) {
 
 function handleItemClick(item, e) {
   if (this.isMoving) {
-    return true;
+    e.stopPropagation();
+    return false;
   }
 
   if (this.activeItem) this.activeItem.style.color = '';
@@ -283,40 +312,15 @@ function handleItemKeydown(item, e) {
   return true;
 }
 
-function toggleSubMenu(parent) {
-  var subUL = parent.querySelector('ul');
-  var firstLI = subUL.querySelector(':scope > li:not(.menu-drawer-title)');
-
-  if (this.activeItem) this.activeItem.style.color = '';
-
-  if (subUL.getAttribute('aria-hidden') === 'true') {
-    parent.style.color = '';
-    subUL.style.display = 'block';
-    setTimeout(function () {
-      subUL.style.left = '0';
-      subUL.style.right = '0';
-    }, 0);
-    subUL.setAttribute('aria-hidden', 'false');
-    vd.isMoving = true;
-    setTimeout(function () {
-      firstLI.focus();
-      vd.isMoving = false;
-    }, 500);
-    firstLI.style.color = 'red';
-    this.activeItem = firstLI;
-  } else {
-    subUL.style.left = '100%';
-    subUL.style.right = '-100%';
-    subUL.setAttribute('aria-hidden', 'true');
-    vd.isMoving = true;
-    setTimeout(function () {
-      parent.focus();
-      vd.isMoving = false;
-      subUL.style.display = 'none';
-    }, 500);
-    parent.style.color = 'red';
-    this.activeItem = parent;
+function handleTitleClick(title, e) {
+  if (this.isMoving) {
+    e.stopPropagation();
+    return false;
   }
+
+  this.hideSubMenu(title);
+  e.stopPropagation();
+  return false;
 }
 
 function showSubMenu(parent) {
@@ -466,14 +470,4 @@ function setKeyActiveItem(newItem) {
   this.activeItem = newItem;
   this.activeItem.focus();
   this.activeItem.style.color = 'red';
-}
-
-function setActiveItem(item) {
-  if (this.activeItem !== null) {
-    var UL = this.activeItem.querySelector(':scope > ul');
-    UL.style.display = 'none';
-    UL.setAttribute('aria-hidden', 'false');
-    UL.style.color = 'black';
-  }
-  this.activeItem = item;
 }
