@@ -9,6 +9,7 @@ function AriaDrawer(_id) {
   this.allItems = [];
   this.childMenus = [];
   this.activeItem = null;
+  this.isHidden = true;
   this.isMoving = false;
 
   this.keys = {
@@ -20,7 +21,7 @@ function AriaDrawer(_id) {
     up: 38,
     right: 39,
     down: 40
-  }
+  };
 
   if (typeof _id === 'string') {
     this.id = _id;
@@ -44,8 +45,9 @@ AriaDrawer.prototype.showSubMenu = showSubMenu;
 AriaDrawer.prototype.hideSubMenu = hideSubMenu;
 AriaDrawer.prototype.slideInMenu = slideInMenu;
 AriaDrawer.prototype.slideOutMenu = slideOutMenu;
+AriaDrawer.prototype.hideAllMenus = hideAllMenus;
 AriaDrawer.prototype.moveToPrevMenu = moveToPrevMenu;
-AriaDrawer.prototype.moveToNextMenu = moveToNextMenu
+AriaDrawer.prototype.moveToNextMenu = moveToNextMenu;
 AriaDrawer.prototype.moveToPrevItem = moveToPrevItem;
 AriaDrawer.prototype.moveToNextItem = moveToNextItem;
 AriaDrawer.prototype.setKeyActiveItem = setKeyActiveItem;
@@ -93,7 +95,7 @@ function bindHandlers() {
   vd.menuEl.onkeydown = (function () {
     return function (e) {
       vd.handleMenuKeydown(e);
-    }
+    };
   })();
 
   // Items
@@ -105,14 +107,14 @@ function bindHandlers() {
       var item = vd.items[i];
       return function (e) {
         return vd.handleItemClick(item, e);
-      }
+      };
     })();
 
     item.onkeydown = (function () {
       var item = vd.items[i];
       return function (e) {
         return vd.handleItemKeydown(item, e);
-      }
+      };
     })();
   }
 
@@ -125,14 +127,14 @@ function bindHandlers() {
       var parent = vd.parents[i];
       return function (e) {
         return vd.handleParentClick(parent, e);
-      }
+      };
     })();
 
     parent.onkeydown = (function () {
       var parent = vd.parents[i];
       return function (e) {
         return vd.handleParentKeydown(parent, e);
-      }
+      };
     })();
   }
 
@@ -145,7 +147,7 @@ function bindHandlers() {
       var title = vd.titles[i];
       return function (e) {
         return vd.handleTitleClick(title, e);
-      }
+      };
     })();
   }
 
@@ -161,22 +163,7 @@ function handleDocumentClick() {
 
   var stillMoving = setInterval(function () {
     if (vd.isMoving) { return true; }
-
-    vd.isMoving = true;
-    for (i = 0, l = vd.childMenus.length; i < l; i++) {
-      vd.childMenus[i].setAttribute('aria-hidden', 'true');
-      vd.childMenus[i].style.left = '100%';
-      vd.childMenus[i].style.right = '-100%';
-    }
-    setTimeout(function () {
-      for (i = 0, l = vd.childMenus.length; i < l; i++) {
-        vd.childMenus[i].style.display = 'none';
-      }
-      vd.isMoving = false;
-    }, 500);
-
-    vd.activeItem = null;
-
+    vd.hideAllMenus();
     clearInterval(stillMoving);
   }, 100);
 }
@@ -187,16 +174,7 @@ function handleMenuKeydown(e) {
   var l = 0;
 
   if (e.keyCode === this.keys.tab) {
-    vd.isMoving = true;
-    for (i = 0, l = vd.childMenus.length; i < l; i++) {
-      vd.childMenus[i].style.left = '100%';
-      vd.childMenus[i].style.right = '-100%';
-      vd.childMenus[i].setAttribute('aria-hidden', 'true');
-    }
-    vd.activeItem = null;
-    setTimeout(function () {
-      vd.isMoving = false;
-    }, 500);
+    vd.hideAllMenus();
     e.stopPropagation();
     return false;
   }
@@ -258,7 +236,7 @@ function handleItemClick(item, e) {
   }
 
   this.activeItem = item;
-  var href = item.getAttribute('data-href')
+  var href = item.getAttribute('data-href');
   if (href !== null) { window.location = href; }
   e.stopPropagation();
   return false;
@@ -278,7 +256,7 @@ function handleItemKeydown(item, e) {
   switch (e.keyCode) {
     case this.keys.enter:
     case this.keys.space:
-      var href = item.getAttribute('data-href')
+      var href = item.getAttribute('data-href');
       if (href !== null) { window.location = href; }
       e.stopPropagation();
       return false;
@@ -317,6 +295,8 @@ function showSubMenu(parent) {
   var vd = this;
   var subUL = parent.querySelector('ul');
   var firstLI = subUL.querySelector(':scope > li:not(.menu-drawer-title)');
+
+  vd.isHidden = false;
 
   this.slideInMenu(subUL, function () {
     firstLI.focus();
@@ -367,6 +347,29 @@ function slideOutMenu(UL, callback) {
     callback();
     vd.isMoving = false;
   }, 500);
+}
+
+function hideAllMenus() {
+  var vd = this;
+
+  if (vd.isHidden) { return true; }
+  vd.isMoving = true;
+
+  for (i = 0, l = vd.childMenus.length; i < l; i++) {
+    vd.childMenus[i].setAttribute('aria-hidden', 'true');
+    vd.childMenus[i].style.left = '100%';
+    vd.childMenus[i].style.right = '-100%';
+  }
+
+  setTimeout(function () {
+    for (i = 0, l = vd.childMenus.length; i < l; i++) {
+      vd.childMenus[i].style.display = 'none';
+    }
+    vd.isHidden = true;
+    vd.isMoving = false;
+  }, 500);
+
+  vd.activeItem = null;
 }
 
 function moveToPrevMenu(item) {
