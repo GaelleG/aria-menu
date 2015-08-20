@@ -159,13 +159,27 @@ function handleDocumentClick() {
   var i = 0;
   var l = 0;
 
-  for (i = 0, l = vd.childMenus.length; i < l; i++) {
-    vd.childMenus[i].style.display = 'none';
-    vd.childMenus[i].setAttribute('aria-hidden', 'true');
-  }
+  var stillMoving = setInterval(function () {
+    if (vd.isMoving) { return true; }
 
-  if (vd.activeItem) vd.activeItem.style.color = '';
-  vd.activeItem = null;
+    vd.isMoving = true;
+    for (i = 0, l = vd.childMenus.length; i < l; i++) {
+      vd.childMenus[i].style.left = '100%';
+      vd.childMenus[i].style.right = '-100%';
+      vd.childMenus[i].setAttribute('aria-hidden', 'true');
+    }
+    setTimeout(function () {
+      for (i = 0, l = vd.childMenus.length; i < l; i++) {
+        vd.childMenus[i].style.display = 'none';
+      }
+      vd.isMoving = false;
+    }, 500);
+
+    if (vd.activeItem) vd.activeItem.style.color = '';
+    vd.activeItem = null;
+
+    clearInterval(stillMoving);
+  },100);
 }
 
 function handleMenuKeydown(e) {
