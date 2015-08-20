@@ -296,6 +296,10 @@ function showSubMenu(parent) {
   var subUL = parent.querySelector('ul');
   var firstLI = subUL.querySelector(':scope > li:not(.menu-drawer-title)');
 
+  if (subUL.getAttribute('aria-hidden') === 'false') {
+    return;
+  }
+
   vd.isHidden = false;
 
   this.slideInMenu(subUL, function () {
