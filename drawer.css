@@ -1,5 +1,6 @@
 body, html {
   margin: 0;
+  font-family: arial;
 }
 
 .menu-drawer-container {
@@ -9,7 +10,7 @@ body, html {
   width: 400px;
   overflow-x: hidden;
   overflow-y: auto;
-  background-color: yellow;
+  border-right: 1px solid #ddd;
 }
 
 .menu-drawer {
@@ -19,7 +20,9 @@ body, html {
   left: 0;
   right: 0;
   min-height: 100%;
-  background-color: rgba(255,255,255,0.3);
+  background-color: #fff;
+  list-style-type: none;
+  padding: 0;
 }
 
 .menu-drawer ul {
@@ -27,9 +30,13 @@ body, html {
   position: absolute;
   top: 0;
   left: 100%;
-  right: 0;
+  right: -100%;
   min-height: 100%;
-  background-color: rgba(255,255,255,0.3);
+  background-color: #fff;
+  list-style-type: none;
+  padding: 0;
+  color: #000;
+  font-weight: normal;
   -webkit-transition: left .5s, right .5s;
   transition: left .5s, right .5s;
 }
@@ -38,6 +45,28 @@ body, html {
   padding: 20px;
 }
 
+.menu-drawer li:focus {
+  font-weight: bold;
+}
+
+.menu-drawer li:hover {
+  background-color: #0088ce;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+}
+
 .menu-drawer-title {
-  text-decoration: line-through;
+  border-bottom: 1px solid #ddd;
+  text-align: right;
+}
+
+.menu-drawer ul.menu-drawer--focus {
+  left: 0;
+  right: 0;
+}
+
+.menu-drawer ul {
+  color: #000;
+  font-weight: normal;
 }
