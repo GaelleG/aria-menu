@@ -10,30 +10,44 @@
       <li class="menu-drawer-parent menu-drawer-root" role="menuitem" tabindex="0" aria-haspopup="true">
         Item 1
         <ul role="menu" aria-hidden="true">
-          <li class="menu-drawer-title">
+          <li class="menu-drawer-title" aria-hidden="true">
             Item 1
           </li>
           <li class="menu-drawer-parent" role="menuitem" tabindex="-1" aria-haspopup="true">
             Item 1 A
             <ul role="menu" aria-hidden="true">
-              <li class="menu-drawer-title">
+              <li class="menu-drawer-title" aria-hidden="true">
                 Item 1 A
               </li>
-              <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#1Aa">
+              <li class="menu-drawer-item" role="link" tabindex="-1" data-href="#1Aa">
                 Item 1 A a
               </li>
-              <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#1Ab">
+              <li class="menu-drawer-item" role="link" tabindex="-1" data-href="#1Ab">
                 Item 1 A b
               </li>
-              <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#1Ac">
+              <li class="menu-drawer-parent" role="menuitem" tabindex="-1" aria-haspopup="true">
                 Item 1 A c
+                <ul role="menu" aria-hidden="true">
+                  <li class="menu-drawer-title" aria-hidden="true">
+                    Item 1 A c
+                  </li>
+                  <li class="menu-drawer-item" role="link" tabindex="-1" data-href="#1Ac.">
+                    Item 1 A c .
+                  </li>
+                  <li class="menu-drawer-item" role="link" tabindex="-1" data-href="#1Ac..">
+                    Item 1 A c ..
+                  </li>
+                  <li class="menu-drawer-parent" role="link" tabindex="-1" data-href="#1Ac...">
+                    Item 1 A c ...
+                  </li>
+                </ul>
               </li>
             </ul>
           </li>
-          <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#1B">
+          <li class="menu-drawer-item" role="link" tabindex="-1" data-href="#1B">
             Item 1 B
           </li>
-          <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#1C">
+          <li class="menu-drawer-item" role="link" tabindex="-1" data-href="#1C">
             Item 1 C
           </li>
         </ul>
@@ -41,16 +55,16 @@
       <li class="menu-drawer-parent menu-drawer-root" role="menuitem" tabindex="-1" aria-haspopup="true">
         Item 2
         <ul role="menu" aria-hidden="true">
-          <li class="menu-drawer-title">
+          <li class="menu-drawer-title" aria-hidden="true">
             Item 2
           </li>
-          <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#2A">
+          <li class="menu-drawer-item" role="link" tabindex="-1" data-href="#2A">
             Item 2 A
           </li>
-          <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#2B">
+          <li class="menu-drawer-item" role="link" tabindex="-1" data-href="#2B">
             Item 2 B
           </li>
-          <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#2C">
+          <li class="menu-drawer-item" role="link" tabindex="-1" data-href="#2C">
             Item 2 C
           </li>
         </ul>
@@ -58,19 +72,22 @@
       <li class="menu-drawer-parent menu-drawer-root" role="menuitem" tabindex="-1" aria-haspopup="true">
         Item 3
         <ul role="menu" aria-hidden="true">
-          <li class="menu-drawer-title">
+          <li class="menu-drawer-title" aria-hidden="true">
             Item 3
           </li>
-          <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#3A">
+          <li class="menu-drawer-item" role="link" tabindex="-1" data-href="#3A">
             Item 3 A
           </li>
-          <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#3B">
+          <li class="menu-drawer-item" role="link" tabindex="-1" data-href="#3B">
             Item 3 B
           </li>
-          <li class="menu-drawer-item" role="menuitem" tabindex="-1" data-href="#3C">
+          <li class="menu-drawer-item" role="link" tabindex="-1" data-href="#3C">
             Item 3 C
           </li>
         </ul>
+      </li>
+      <li class="menu-drawer-item menu-drawer-root" role="link" tabindex="-1" data-href="#4">
+        Item 4
       </li>
     </ul>
   </div>
